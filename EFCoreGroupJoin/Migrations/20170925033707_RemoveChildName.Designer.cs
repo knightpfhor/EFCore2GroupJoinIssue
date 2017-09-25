@@ -11,9 +11,10 @@ using System;
 namespace EFCoreGroupJoin.Migrations
 {
     [DbContext(typeof(GroupJoinContext))]
-    partial class GroupJoinContextModelSnapshot : ModelSnapshot
+    [Migration("20170925033707_RemoveChildName")]
+    partial class RemoveChildName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

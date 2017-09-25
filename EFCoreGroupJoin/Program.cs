@@ -28,7 +28,7 @@ namespace EFCoreGroupJoin
                     context.Children.Select(x => new
                     {
                         ParentId = x.ParentId,
-                        Name = x.Name
+                        OtherParent = x.OtherParent.Name
                     }),
                     p => p.Id,
                     c => c.ParentId,
@@ -36,7 +36,7 @@ namespace EFCoreGroupJoin
                     {
                         ParentId = parent.Id,
                         ParentName = parent.Name,
-                        Children = child.Select(x => x.Name)
+                        Children = child.Select(x => x.OtherParent)
                     });
 
                 foreach (var parent in results)
@@ -61,11 +61,15 @@ namespace EFCoreGroupJoin
             CheckAndAddParent(context, 2);
             CheckAndAddParent(context, 3);
 
-            CheckAndAddChild(context, 1, "Parent 1, Child 1");
-            CheckAndAddChild(context, 1, "Parent 1, Child 2");
+            CheckAndAddOtherParent(context, 1);
+            CheckAndAddOtherParent(context, 2);
 
-            CheckAndAddChild(context, 2, "Parent 2, Child 1");
-            CheckAndAddChild(context, 2, "Parent 2, Child 2");
+
+            CheckAndAddChild(context, 1, 1);
+            CheckAndAddChild(context, 1, 2);
+
+            CheckAndAddChild(context, 2, 1);
+            CheckAndAddChild(context, 2, 2);
 
             if (ensureOneParentHasNoChildren)
             {
@@ -78,10 +82,8 @@ namespace EFCoreGroupJoin
             }
             else
             {
-                CheckAndAddChild(context, 3, "Parent 3, Child 1");
+                CheckAndAddChild(context, 3, 2);
             }
-            
-
         }
 
         private static void CheckAndAddParent(GroupJoinContext context, int id)
@@ -101,16 +103,33 @@ namespace EFCoreGroupJoin
             }
         }
 
-        private static void CheckAndAddChild(GroupJoinContext context, int parentId, string childName)
+        private static void CheckAndAddOtherParent(GroupJoinContext context, int id)
         {
-            var child = context.Children.SingleOrDefault(x => x.ParentId == parentId && x.Name == childName);
+            var otherParent = context.OtherParents.SingleOrDefault(x => x.Id == id);
+
+            if (otherParent == null)
+            {
+                otherParent = new OtherParent()
+                {
+                    Name = "Other Parent" + id
+                };
+
+                context.OtherParents.Add(otherParent);
+
+                context.SaveChanges();
+            }
+        }
+
+        private static void CheckAndAddChild(GroupJoinContext context, int parentId, int otherParentId)
+        {
+            var child = context.Children.SingleOrDefault(x => x.ParentId == parentId && x.OtherParentId == otherParentId);
 
             if (child == null)
             {
                 child = new Child
                 {
                     ParentId = parentId,
-                    Name = childName
+                    OtherParentId = otherParentId
                 };
 
                 context.Children.Add(child);

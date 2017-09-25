@@ -9,6 +9,7 @@ namespace EFCoreGroupJoin
         public int Id { get; set; }
         public int ParentId { get; set; }
         public Parent Parent { get; set; }
-        public string Name { get; set; }
+        public int OtherParentId { get; set; }
+        public OtherParent OtherParent { get; set; }
     }
 }

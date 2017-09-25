@@ -11,9 +11,10 @@ using System;
 namespace EFCoreGroupJoin.Migrations
 {
     [DbContext(typeof(GroupJoinContext))]
-    partial class GroupJoinContextModelSnapshot : ModelSnapshot
+    [Migration("20170925033221_AddOtherParent")]
+    partial class AddOtherParent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,6 +25,9 @@ namespace EFCoreGroupJoin.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
 
                     b.Property<int>("OtherParentId");
 
