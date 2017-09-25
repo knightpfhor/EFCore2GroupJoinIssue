@@ -24,6 +24,34 @@ namespace EFCoreGroupJoin
 
                 InitialiseData(context, ensureOneParentHasNoChildren);
 
+                //var preCalcChildren = context.Children.Select(x => new
+                //{
+                //    ParentId = x.ParentId,
+                //    OtherParent = x.OtherParent.Name
+                //}).ToList();
+
+                //var results = context.Parents.GroupJoin(
+                //    preCalcChildren,
+                //    p => p.Id,
+                //    c => c.ParentId,
+                //    (parent, child) => new
+                //    {
+                //        ParentId = parent.Id,
+                //        ParentName = parent.Name,
+                //        Children = child.Select(x => x.OtherParent)
+                //    });
+
+                //var results = context.Parents.GroupJoin(
+                //    context.Children,
+                //    p => p.Id,
+                //    c => c.ParentId,
+                //    (parent, child) => new
+                //    {
+                //        ParentId = parent.Id,
+                //        ParentName = parent.Name,
+                //        Children = child.Select(x => x.OtherParent.Name)
+                //    });
+
                 var results = context.Parents.GroupJoin(
                     context.Children.Select(x => new
                     {
