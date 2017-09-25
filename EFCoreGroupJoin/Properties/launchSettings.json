@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EFCoreGroupJoin": {
+      "commandName": "Project",
+      "commandLineArgs": "-d"
+    }
+  }
+}
